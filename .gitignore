@@ -1,1 +1,9 @@
+# npm
 node_modules
+
+# templ
+*_templ.go
+*_templ.txt
+
+# tailwind
+static/css/styles.css
