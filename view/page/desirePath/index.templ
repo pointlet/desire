@@ -1,0 +1,26 @@
+package desirePath 
+
+import (
+  "strconv"
+  "github.com/feldtsen/farrago/view/components"
+  "github.com/feldtsen/farrago/view/layout"
+  "github.com/feldtsen/farrago/pkg/models"
+	"github.com/feldtsen/farrago/pkg/middleware"
+)
+
+templ DesirePathPartial(pagination models.PaginationModel) {
+  @components.DefaultButton(components.DefaultButtonProps{
+    Text: "the request of your desire page " + strconv.Itoa(pagination.Page + 1),
+    Endpoint: middleware.GeneratePaginatedURL("desirePath", pagination.Page, pagination.PageSize),
+    Target: "pageContainer",
+  })
+  <div>page {strconv.Itoa(pagination.Page)}</div>
+  <div class="pageContainer">
+  </div>
+}
+
+templ DesirePathPage(pagination models.PaginationModel) {
+  @layout.BaseLayout() {
+    @DesirePathPartial(pagination)
+  }
+}

@@ -1,0 +1,41 @@
+package login 
+
+import "github.com/feldtsen/farrago/view/layout"
+
+templ LoginPartial() {
+  <form hx-post="/login" class="grid gap-1 p-1 m-auto xl:w-1/3 md:w-2/4 bg-zinc-200 shadow-md shadow-black">
+    <div class="bg-blue-900 text-white p-1">Enter Farrago Credentials</div>
+    <div class="grid grid-cols-6 min-h-36">
+      <div class="my-2 mx-auto text-4xl">
+        🔑
+      </div>
+      <div class="col-span-4 grid gap-5 p-1">
+        <div class="grid grid-rows-2 gap-2">
+          <p>You can read more about the measures we take to secure your privacy <a hx-get="/" hx-target="#content" class="underline hover:cursor-pointer">here</a>.</p>
+          <p>Type a username and password to identify yourself to Farrago.</p>
+        </div>
+        <div class="grid grid-cols-3">
+          <label for="username">Username:</label>
+          <input type="text" id="username" name="username" required class="col-span-2 shadow-gray-400 shadow-inner" />
+        </div>
+
+        <div class="grid grid-cols-3">
+          <label for="password">Password:</label>
+          <input type="password" id="password" name="password" required class="col-span-2 shadow-gray-400 shadow-inner" />
+        </div>
+
+      </div>
+      <div class="flex flex-col gap-2">
+        <button type="submit" class="shadow-black shadow-sm hover:bg-zinc-300">OK</button>
+        <button hx-get="/" hx-target="#content" hx-push-url="true" class="shadow-black shadow-sm hover:bg-zinc-300">Cancel</button>
+      </div>
+    </div>
+  </form>
+  }
+
+templ LoginPage() {
+  @layout.BaseLayout() {
+    @LoginPartial()
+  }
+}
+

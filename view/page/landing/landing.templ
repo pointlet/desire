@@ -1,0 +1,19 @@
+package landing
+
+import "github.com/feldtsen/farrago/view/layout"
+import "github.com/feldtsen/farrago/view/components"
+
+templ LandingPartial() {
+  <div> ...landing partial </div>
+  @components.DefaultButton(components.DefaultButtonProps{
+    Text: "Desire path page", 
+    Endpoint: "/desirePath?page=1&pageSize=10",
+    Target: "pageContainer",
+  })
+}
+
+templ LandingPage() {
+  @layout.BaseLayout() {
+    @LandingPartial()
+  }
+}

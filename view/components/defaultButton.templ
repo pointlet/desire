@@ -1,0 +1,17 @@
+package components
+
+type DefaultButtonProps struct {
+  Text string
+  Endpoint string
+  Target string
+}
+
+templ DefaultButton(props DefaultButtonProps) {
+  <button
+    class="border-black border-2 px-4 py-2 rounded hover:bg-black hover:text-white"
+    hx-get={props.Endpoint}
+    hx-trigger="click"
+    hx-swap="outerHTML"
+    hx-replace-url="true"
+  >{props.Text}</button>
+}
