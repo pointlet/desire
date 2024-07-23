@@ -42,6 +42,18 @@ func main() {
 	}
 	defer dbpool.Close()
 
+	// TODO: testing interface for UserRepository
+	userRepository := &db.PgxUserRepository{DB: dbpool}
+
+	userRepository.InsertUserAccountEntry("test", "test")
+	userAccount, err := userRepository.GetUserAccountEntry("test")
+	if err != nil {
+		log.Error(err)
+	} else {
+		log.Printf("User account: %v", userAccount)
+	}
+	userRepository.DeleteUserAccountEntry("test")
+
 	// Landing page
 	landingPage := &handlers.LandingPage{}
 	server.e.GET("/", landingPage.Handler)
