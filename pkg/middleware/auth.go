@@ -4,6 +4,7 @@ import (
 	"errors"
 	"strings"
 
+	"github.com/feldtsen/farrago/pkg/db"
 	"github.com/labstack/echo/v4"
 	"golang.org/x/crypto/bcrypt"
 )
@@ -43,9 +44,10 @@ func IsUserAuthenticated(username, password string) bool {
 	return true
 }
 
-func Authenticate() echo.MiddlewareFunc {
+func Authenticate(userRepository db.UserRepository) echo.MiddlewareFunc {
 	return func(next echo.HandlerFunc) echo.HandlerFunc {
 		return func(c echo.Context) error {
+			userRepository.GetUserAccountEntry("test")
 
 			username := c.Request().Header.Get("username")
 			password := c.Request().Header.Get("password")

@@ -70,7 +70,7 @@ func main() {
 	// Super secret page
 	server.e.GET("/secret", func(c echo.Context) error {
 		return c.String(http.StatusOK, "You are authenticated!")
-	}, middleware.Authenticate())
+	}, middleware.Authenticate(userRepository))
 
 	ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt)
 	defer stop()

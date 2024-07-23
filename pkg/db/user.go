@@ -17,6 +17,10 @@ type UserAccount struct {
 	PasswordHash string
 }
 
+type Result struct {
+	RowsAffected int64
+}
+
 type PgxUserRepository struct {
 	DB *pgxpool.Pool
 }
@@ -43,7 +47,7 @@ func (repo *PgxUserRepository) GetUserAccountEntry(username string) (*UserAccoun
 	return userAccount, nil
 }
 
-func (repo *PgxUserRepository) InsertUserAccountEntry(username, passwordHash string) error {
+func (repo *PgxUserRepository) InsertUserAccountEntry(username, passwordHash string) (Result, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
@@ -52,15 +56,15 @@ func (repo *PgxUserRepository) InsertUserAccountEntry(username, passwordHash str
 		VALUES ($1, $2)
 	`
 
-	_, err := repo.DB.Exec(ctx, query, username, passwordHash)
+	result, err := repo.DB.Exec(ctx, query, username, passwordHash)
 	if err != nil {
-		return err
+		return Result{RowsAffected: 0}, err
 	}
 
-	return nil
+	return Result{RowsAffected: result.RowsAffected()}, nil
 }
 
-func (repo *PgxUserRepository) DeleteUserAccountEntry(username string) error {
+func (repo *PgxUserRepository) DeleteUserAccountEntry(username string) (Result, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
@@ -69,10 +73,10 @@ func (repo *PgxUserRepository) DeleteUserAccountEntry(username string) error {
 		WHERE username = $1 
 	`
 
-	_, err := repo.DB.Exec(ctx, query, username)
+	result, err := repo.DB.Exec(ctx, query, username)
 	if err != nil {
-		return err
+		return Result{RowsAffected: 0}, err
 	}
 
-	return nil
+	return Result{RowsAffected: result.RowsAffected()}, nil
 }
