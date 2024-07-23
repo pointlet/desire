@@ -3,10 +3,7 @@
 package config
 
 import (
-	"context"
 	"fmt"
-
-	"github.com/jackc/pgx/v5/pgxpool"
 )
 
 const (
@@ -17,17 +14,22 @@ const (
 	dbname   = "farrago"
 )
 
-func ConnectToDB() (*pgxpool.Pool, error) {
-	// Create a connection string
-	connString := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=disable",
-		host, port, user, password, dbname)
+type DBConfig struct {
+	Host             string
+	Port             int
+	User             string
+	Password         string
+	DBName           string
+	ConnectionString string
+}
 
-	// Connect to the database
-	dbpool, err := pgxpool.New(context.Background(), connString)
-	if err != nil {
-		return nil, fmt.Errorf("unable to connect to database: %v", err)
+func NewDBConfig() *DBConfig {
+	return &DBConfig{
+		Host:             host,
+		Port:             port,
+		User:             user,
+		Password:         password,
+		DBName:           dbname,
+		ConnectionString: fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=disable", host, port, user, password, dbname),
 	}
-
-	fmt.Println("Connected to the database")
-	return dbpool, nil
 }

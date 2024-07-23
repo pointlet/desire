@@ -4,29 +4,11 @@ import (
 	"errors"
 	"strings"
 
-	"github.com/feldtsen/farrago/pkg/db"
 	"github.com/labstack/echo/v4"
 	"golang.org/x/crypto/bcrypt"
 )
 
 var PEPPER = "d0924ce78d7279c0f694799a" // TODO: remove this and set as env var
-
-func CreateNewUser(statements *db.PreparedStatements, username, password string) error {
-	hashedPassword, err := GenerateHashPassword(password)
-
-	if err != nil {
-		return err
-	}
-
-	_, err = statements.InsertNewUser.Exec(username, hashedPassword)
-
-	if err != nil {
-		return err
-	}
-
-	return nil
-
-}
 
 func GenerateHashPassword(password string) (string, error) {
 	if len(password) < 12 || len(password) > 40 {

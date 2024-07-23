@@ -8,7 +8,7 @@ import (
 	"github.com/feldtsen/farrago/pkg/middleware"
 )
 
-templ DesirePathPartial(pagination models.PaginationModel) {
+templ DesirePathPartial(pagination models.Pagination) {
   @components.DefaultButton(components.DefaultButtonProps{
     Text: "the request of your desire page " + strconv.Itoa(pagination.Page + 1),
     Endpoint: middleware.GeneratePaginatedURL("desirePath", pagination.Page, pagination.PageSize),
@@ -19,7 +19,7 @@ templ DesirePathPartial(pagination models.PaginationModel) {
   </div>
 }
 
-templ DesirePathPage(pagination models.PaginationModel) {
+templ DesirePathPage(pagination models.Pagination) {
   @layout.BaseLayout() {
     @DesirePathPartial(pagination)
   }

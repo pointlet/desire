@@ -9,7 +9,7 @@ import (
 type DesirePath struct{}
 
 func (h *DesirePath) Handler(c echo.Context) error {
-	paginationModel := c.Get("paginationModel").(models.PaginationModel)
+	paginationModel := c.Get("paginationModel").(models.Pagination)
 
 	return renderByHXRequest(c, desirePath.DesirePathPartial(paginationModel), desirePath.DesirePathPage(paginationModel))
 }

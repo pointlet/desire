@@ -29,7 +29,7 @@ func Pagination(next echo.HandlerFunc) echo.HandlerFunc {
 
 		offset := (page - 1) * pageSize
 
-		paginationModel := models.PaginationModel{
+		paginationModel := models.Pagination{
 			Page:     page,
 			PageSize: pageSize,
 			Offset:   offset,

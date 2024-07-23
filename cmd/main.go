@@ -9,39 +9,54 @@ import (
 
 	"github.com/feldtsen/farrago/pkg/api/handlers"
 	"github.com/feldtsen/farrago/pkg/config"
+	"github.com/feldtsen/farrago/pkg/db"
 	"github.com/feldtsen/farrago/pkg/middleware"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/gommon/log"
 )
 
-func main() {
-	// Setup
-	e := initEchoServer()
-	defer e.Close()
+type Server struct {
+	e      *echo.Echo
+	config *config.Config
+}
 
-	dbpool, err := config.ConnectToDB()
+func NewServer() *Server {
+	return &Server{
+		e:      echo.New(),
+		config: config.NewConfig(),
+	}
+}
+
+func main() {
+
+	server := NewServer()
+
+	server.e.Logger.SetLevel(log.INFO)
+	server.e.Static("/static", "static")
+	defer server.e.Close()
+
+	dbpool, err := db.ConnectToDB(&server.config.DB)
 	if err != nil {
 		log.Error(err)
 		os.Exit(1)
 	}
-
 	defer dbpool.Close()
 
 	// Landing page
 	landingPage := &handlers.LandingPage{}
-	e.GET("/", landingPage.Handler)
+	server.e.GET("/", landingPage.Handler)
 
 	// Desire path
 	desirePath := &handlers.DesirePath{}
-	e.GET("/desirePath", middleware.Pagination(desirePath.Handler))
+	server.e.GET("/desirePath", middleware.Pagination(desirePath.Handler))
 
 	// Authentication
 	login := &handlers.Login{}
-	e.GET("/login", login.GetHandler)
-	e.POST("/login", login.PostHandler)
+	server.e.GET("/login", login.GetHandler)
+	server.e.POST("/login", login.PostHandler)
 
 	// Super secret page
-	e.GET("/secret", func(c echo.Context) error {
+	server.e.GET("/secret", func(c echo.Context) error {
 		return c.String(http.StatusOK, "You are authenticated!")
 	}, middleware.Authenticate())
 
@@ -50,28 +65,15 @@ func main() {
 
 	// Start server
 	go func() {
-		if err := e.Start(":1323"); err != nil && err != http.ErrServerClosed {
-			e.Logger.Fatal("shutting down the server")
+		if err := server.e.Start(server.config.Server.Port); err != nil && err != http.ErrServerClosed {
+			server.e.Logger.Fatal("shutting down the server")
 		}
 	}()
 
 	<-ctx.Done()
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
-	if err := e.Shutdown(ctx); err != nil {
-		e.Logger.Fatal(err)
+	if err := server.e.Shutdown(ctx); err != nil {
+		server.e.Logger.Fatal(err)
 	}
-
-}
-
-func initEchoServer() *echo.Echo {
-	e := echo.New()
-
-	// Static files
-	e.Static("/static", "static")
-
-	// Set logging level
-	e.Logger.SetLevel(log.INFO)
-
-	return e
 }
