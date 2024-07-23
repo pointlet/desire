@@ -1,4 +1,4 @@
-const { colors } = require('./theme');
+const { colors, fontFamily } = require('./theme');
 const plugin = require("tailwindcss/plugin");
 
 const colorsToCssVariablesPlugin = plugin(({ addUtilities }) => {
@@ -34,7 +34,8 @@ module.exports = {
   content: ["view/**/*.html", "view/**/*.templ"],
   theme: {
     extend: {
-      colors
+      colors,
+      fontFamily
     },
   },
   plugins: [

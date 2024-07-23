@@ -1,3 +1,5 @@
+const defaultTheme = require("tailwindcss/defaultTheme");
+
 const baseColors = {
   white: "#ffffff",
   gray: "#e4e4e7",
@@ -26,4 +28,22 @@ export const colors = {
     light: baseColors.white,
     dark: baseColors.black,
   }
+}
+
+export const fontFamily = {
+  body: [
+    "system-ui", 
+    "sans-serif",
+    ...defaultTheme.fontFamily.sans
+  ],
+  heading: [
+    "system-ui", 
+    "sans-serif",
+    ...defaultTheme.fontFamily.sans
+  ],
+  monospace: [
+    "Menlo",
+    "monospace",
+    ...defaultTheme.fontFamily.mono
+  ],
 }
