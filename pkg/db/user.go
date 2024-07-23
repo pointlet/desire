@@ -4,6 +4,7 @@ import (
 	"context"
 	"time"
 
+	"github.com/feldtsen/farrago/pkg/models"
 	"github.com/jackc/pgx/v5/pgxpool"
 )
 
@@ -15,10 +16,6 @@ type UserAccount struct {
 	ID           int
 	Username     string
 	PasswordHash string
-}
-
-type Result struct {
-	RowsAffected int64
 }
 
 type PgxUserRepository struct {
@@ -47,7 +44,7 @@ func (repo *PgxUserRepository) GetUserAccountEntry(username string) (*UserAccoun
 	return userAccount, nil
 }
 
-func (repo *PgxUserRepository) InsertUserAccountEntry(username, passwordHash string) (Result, error) {
+func (repo *PgxUserRepository) InsertUserAccountEntry(username, passwordHash string) (models.DataManipulationResult, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
@@ -58,13 +55,13 @@ func (repo *PgxUserRepository) InsertUserAccountEntry(username, passwordHash str
 
 	result, err := repo.DB.Exec(ctx, query, username, passwordHash)
 	if err != nil {
-		return Result{RowsAffected: 0}, err
+		return models.DataManipulationResult{RowsAffected: 0}, err
 	}
 
-	return Result{RowsAffected: result.RowsAffected()}, nil
+	return models.DataManipulationResult{RowsAffected: result.RowsAffected()}, nil
 }
 
-func (repo *PgxUserRepository) DeleteUserAccountEntry(username string) (Result, error) {
+func (repo *PgxUserRepository) DeleteUserAccountEntry(username string) (models.DataManipulationResult, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
@@ -75,8 +72,8 @@ func (repo *PgxUserRepository) DeleteUserAccountEntry(username string) (Result, 
 
 	result, err := repo.DB.Exec(ctx, query, username)
 	if err != nil {
-		return Result{RowsAffected: 0}, err
+		return models.DataManipulationResult{RowsAffected: 0}, err
 	}
 
-	return Result{RowsAffected: result.RowsAffected()}, nil
+	return models.DataManipulationResult{RowsAffected: result.RowsAffected()}, nil
 }
