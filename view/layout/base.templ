@@ -1,24 +1,23 @@
 package layout 
 
 templ BaseLayout() {
-<!DOCTYPE html>
+	<!DOCTYPE html>
 	<html lang="en">
-        <head>
-            <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-            <meta name="viewport" content="width=device-width, initial-scale=1"/>
-            <meta name="language" content="English"/>
-            <title>farrago</title>
-            <script src="/static/js/htmx.min.js"></script>
-            <link rel="stylesheet" type="text/css" href="/static/css/styles.css"/>
-        </head>
-        <body class="bg-background-regular">
-            <main>
-              <a href="#" hx-get="/login" hx-target="#content" hx-push-url="true">Login</a>
-              <div id="content">
-                { children... }
-              </div>
-            </main>
-        </body>
-    </html>
-
+		<head>
+			<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+			<meta name="viewport" content="width=device-width, initial-scale=1"/>
+			<meta name="language" content="English"/>
+			<title>farrago</title>
+			<script src="/static/js/htmx.min.js"></script>
+			<link rel="stylesheet" type="text/css" href="/static/css/styles.css"/>
+		</head>
+		<body class="bg-background-regular">
+			<main>
+				<a href="#" hx-get="/login" hx-target="#content" hx-push-url="true">Login</a>
+				<div id="content">
+					{ children... }
+				</div>
+			</main>
+		</body>
+	</html>
 }

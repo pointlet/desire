@@ -3,6 +3,9 @@
   "editor.tabSize": 2,
   "editor.insertSpaces": true,
   "editor.formatOnSave": true,
+  "[templ]": {
+    "editor.defaultFormatter": "a-h.templ"
+  },
   "editor.quickSuggestions": {
     "strings": "on"
   },
