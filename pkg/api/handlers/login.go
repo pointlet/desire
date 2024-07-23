@@ -21,5 +21,6 @@ func (h *Login) GetHandler(c echo.Context) error {
 
 func (h *Login) PostHandler(c echo.Context) error {
 	fmt.Println("login clicked")
-	return c.String(http.StatusOK, "login clicked successfully, bitch")
+
+	return c.Redirect(http.StatusFound, "/secret")
 }

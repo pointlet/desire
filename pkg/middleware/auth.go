@@ -18,8 +18,8 @@ func Authenticate(userRepository db.UserRepository) echo.MiddlewareFunc {
 		return func(c echo.Context) error {
 			userRepository.GetUserAccountEntry("test")
 
-			username := c.Request().Header.Get("username")
-			password := c.Request().Header.Get("password")
+			username := c.FormValue("username")
+			password := c.FormValue("password")
 
 			userAccount, err := userRepository.GetUserAccountEntry(username)
 			if err != nil {

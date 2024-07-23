@@ -84,7 +84,7 @@ func main() {
 	// Authentication
 	login := &handlers.Login{}
 	server.e.GET("/login", login.GetHandler)
-	server.e.POST("/login", login.PostHandler)
+	server.e.POST("/login", login.PostHandler, middleware.Authenticate(userRepository))
 
 	// Super secret page
 	server.e.GET("/secret", func(c echo.Context) error {
