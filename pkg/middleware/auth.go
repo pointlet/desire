@@ -1,6 +1,8 @@
 package middleware
 
 import (
+	"fmt"
+
 	"github.com/feldtsen/farrago/pkg/db"
 	"github.com/labstack/echo/v4"
 	"golang.org/x/crypto/bcrypt"
@@ -19,7 +21,14 @@ func Authenticate(userRepository db.UserRepository) echo.MiddlewareFunc {
 			username := c.Request().Header.Get("username")
 			password := c.Request().Header.Get("password")
 
-			if !IsUserAuthenticated(username, password) {
+			userAccount, err := userRepository.GetUserAccountEntry(username)
+			if err != nil {
+				return c.JSON(401, map[string]string{"error": "Failed"})
+			}
+
+			fmt.Printf("User entered username: %s\nUser entered password: %s\n", username, password)
+
+			if !IsUserAuthenticated(userAccount.PasswordHash, password) {
 				return c.JSON(401, map[string]string{"error": "Unauthorized"})
 			}
 

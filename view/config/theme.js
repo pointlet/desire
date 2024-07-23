@@ -8,8 +8,8 @@ const baseColors = {
 
   blue: "#0000ff",
   blueLight: "#5555ff",
-  blueDark: "#000055"
- }
+  blueDark: "#000055",
+};
 
 export const colors = {
   // ...baseColors,
@@ -27,23 +27,12 @@ export const colors = {
     regular: baseColors.dim,
     light: baseColors.white,
     dark: baseColors.black,
-  }
-}
+  },
+};
 
 export const fontFamily = {
-  body: [
-    "system-ui", 
-    "sans-serif",
-    ...defaultTheme.fontFamily.sans
-  ],
-  heading: [
-    "system-ui", 
-    "sans-serif",
-    ...defaultTheme.fontFamily.sans
-  ],
-  monospace: [
-    "Menlo",
-    "monospace",
-    ...defaultTheme.fontFamily.mono
-  ],
-}
+  body: ["system-ui", "sans-serif", ...defaultTheme.fontFamily.sans],
+  heading: ["system-ui", "sans-serif", ...defaultTheme.fontFamily.sans],
+  monospace: ["Menlo", "monospace", ...defaultTheme.fontFamily.mono],
+};
+

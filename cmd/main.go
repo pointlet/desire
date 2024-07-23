@@ -51,7 +51,7 @@ func sanityTestCRUD(userRepository db.UserRepository) {
 	fmt.Printf("Intruder is authenticated: %v\nLegit user is authenticated: %v\nWrong password user is authenticated: %v\n", intruderAccount, legitAccount, wrongPasswordAccount)
 
 	// clean up
-	userRepository.DeleteUserAccountEntry("test")
+	// userRepository.DeleteUserAccountEntry("test")
 }
 
 func main() {
