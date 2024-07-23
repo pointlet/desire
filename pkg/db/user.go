@@ -10,6 +10,8 @@ import (
 
 type UserRepository interface {
 	GetUserAccountEntry(username string) (*UserAccount, error)
+	InsertUserAccountEntry(username, passwordHash string) (models.DataManipulationResult, error)
+	DeleteUserAccountEntry(username string) (models.DataManipulationResult, error)
 }
 
 type UserAccount struct {
@@ -44,14 +46,19 @@ func (repo *PgxUserRepository) GetUserAccountEntry(username string) (*UserAccoun
 	return userAccount, nil
 }
 
-func (repo *PgxUserRepository) InsertUserAccountEntry(username, passwordHash string) (models.DataManipulationResult, error) {
-	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
-	defer cancel()
+func (repo *PgxUserRepository) InsertUserAccountEntry(username, password string) (models.DataManipulationResult, error) {
+	passwordHash, err := GenerateHashPassword(password)
+	if err != nil {
+		return models.DataManipulationResult{RowsAffected: 0}, err
+	}
 
 	query := `
 		INSERT INTO user_accounts (username, password_hash)
 		VALUES ($1, $2)
 	`
+
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
 
 	result, err := repo.DB.Exec(ctx, query, username, passwordHash)
 	if err != nil {

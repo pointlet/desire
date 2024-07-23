@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"net/http"
 	"os"
 	"os/signal"
@@ -27,6 +28,32 @@ func NewServer() *Server {
 	}
 }
 
+// TODO: remove this
+func sanityTestCRUD(userRepository db.UserRepository) {
+
+	// registration flow
+	insertResult, err := userRepository.InsertUserAccountEntry("test", "1234abcd!@#$")
+	if err != nil {
+		log.Error(err)
+	} else {
+		fmt.Printf("Insert user account, rows affected: %d\n", insertResult.RowsAffected)
+	}
+	userAccount, err := userRepository.GetUserAccountEntry("test")
+	if err == nil {
+		fmt.Printf("Username: %s\nPassword: %s\n", userAccount.Username, userAccount.PasswordHash)
+	}
+
+	// is authenticated???
+	intruderAccount := middleware.IsUserAuthenticated("intruder", "intruderpassword")
+	legitAccount := middleware.IsUserAuthenticated(userAccount.PasswordHash, "1234abcd!@#$")
+	wrongPasswordAccount := middleware.IsUserAuthenticated(userAccount.PasswordHash, "1234abcd!@#$ ")
+
+	fmt.Printf("Intruder is authenticated: %v\nLegit user is authenticated: %v\nWrong password user is authenticated: %v\n", intruderAccount, legitAccount, wrongPasswordAccount)
+
+	// clean up
+	userRepository.DeleteUserAccountEntry("test")
+}
+
 func main() {
 
 	server := NewServer()
@@ -44,15 +71,7 @@ func main() {
 
 	// TODO: testing interface for UserRepository
 	userRepository := &db.PgxUserRepository{DB: dbpool}
-
-	userRepository.InsertUserAccountEntry("test", "test")
-	userAccount, err := userRepository.GetUserAccountEntry("test")
-	if err != nil {
-		log.Error(err)
-	} else {
-		log.Printf("User account: %v", userAccount)
-	}
-	userRepository.DeleteUserAccountEntry("test")
+	sanityTestCRUD(userRepository)
 
 	// Landing page
 	landingPage := &handlers.LandingPage{}
@@ -88,4 +107,5 @@ func main() {
 	if err := server.e.Shutdown(ctx); err != nil {
 		server.e.Logger.Fatal(err)
 	}
+
 }
