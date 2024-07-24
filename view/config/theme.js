@@ -4,6 +4,7 @@ const baseColors = {
   white: "#ffffff",
   gray: "#e4e4e7",
   dim: "#333333",
+  dark: "#202020",
   black: "#000000",
 
   blue: "#0000ff",
@@ -13,6 +14,7 @@ const baseColors = {
 
 export const colors = {
   // ...baseColors,
+  dark: baseColors.dark,
   background: {
     regular: baseColors.gray,
     light: baseColors.white,
