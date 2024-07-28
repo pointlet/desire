@@ -20,7 +20,8 @@ func (h *Login) GetHandler(c echo.Context) error {
 }
 
 func (h *Login) PostHandler(c echo.Context) error {
-	fmt.Println("login clicked")
+	fmt.Println("this is after authentication")
 
-	return c.Redirect(http.StatusFound, "/secret")
+	return c.JSON(http.StatusOK, map[string]string{"message": "success"})
+	// return c.Redirect(http.StatusFound, "/secret")
 }

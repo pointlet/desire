@@ -55,11 +55,20 @@ func sanityTestCRUD(userRepository db.UserRepository) {
 }
 
 func main() {
-
 	server := NewServer()
+
+	/*
+		server.e.Use(echoMiddleware.CSRFWithConfig(echoMiddleware.CSRFConfig{
+			TokenLength:  32,
+			TokenLookup:  "header:X-CSRF-Token",
+			CookieName:   "_csrf",
+			CookieMaxAge: 86400,
+		}))
+	*/
 
 	server.e.Logger.SetLevel(log.INFO)
 	server.e.Static("/static", "static")
+	server.e.Use()
 	defer server.e.Close()
 
 	dbpool, err := db.ConnectToDB(&server.config.DB)
@@ -86,10 +95,10 @@ func main() {
 	server.e.GET("/login", login.GetHandler)
 	server.e.POST("/login", login.PostHandler, middleware.Authenticate(userRepository))
 
-	// Super secret page
+	// Just to test JWT validation
 	server.e.GET("/secret", func(c echo.Context) error {
 		return c.String(http.StatusOK, "You are authenticated!")
-	}, middleware.Authenticate(userRepository))
+	}, middleware.JWTValidator)
 
 	ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt)
 	defer stop()
