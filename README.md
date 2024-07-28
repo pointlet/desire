@@ -19,18 +19,18 @@ brew services start postgresql@16
 - Setup the DB for local development
 
 ```bash
-    # From root of project type
-    ./scripts/start_local_db.sh
+# From root of project type
+./scripts/start_local_db.sh
 ```
 
 - Make sure tailwind is installed
 
 ```bash
-    npm install tailwindcss@latest
+npm install tailwindcss@latest
 ```
 
 - Run makefile
 
 ```bash
-    make run dev
+make run dev
 ```
