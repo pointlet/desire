@@ -95,9 +95,8 @@ func main() {
 	server.e.GET("/login", login.GetHandler)
 	server.e.POST("/login", login.PostHandler, middleware.Authenticate(userRepository))
 
-	// Just to test JWT validation
-	server.e.GET("/secret", func(c echo.Context) error {
-		return c.String(http.StatusOK, "You are authenticated!")
+	server.e.GET("/home", func(c echo.Context) error {
+		return c.String(http.StatusOK, "˜")
 	}, middleware.JWTValidator)
 
 	ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt)

@@ -22,6 +22,10 @@ func (h *Login) GetHandler(c echo.Context) error {
 func (h *Login) PostHandler(c echo.Context) error {
 	fmt.Println("this is after authentication")
 
-	return c.JSON(http.StatusOK, map[string]string{"message": "success"})
-	// return c.Redirect(http.StatusFound, "/secret")
+	if c.Request().Header.Get("HX-Request") == "true" {
+		c.Response().Header().Set("HX-Redirect", "/home")
+		return c.NoContent(http.StatusOK)
+	}
+
+	return c.Redirect(http.StatusFound, "/home")
 }
