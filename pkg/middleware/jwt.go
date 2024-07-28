@@ -39,17 +39,29 @@ func ValidateJWT(tokenString string) (*jwt.Token, error) {
 	return token, nil
 }
 
+func GetValidToken(c echo.Context) (string, error) {
+	cookie, err := c.Cookie("token")
+	if err != nil {
+		return "", err
+	}
+
+	_, err = ValidateJWT(cookie.Value)
+
+	if err != nil {
+		return "", err
+	}
+
+	return cookie.Value, nil
+}
+
+func IsLoggedIn(c echo.Context) bool {
+	_, err := GetValidToken(c)
+	return err == nil
+}
+
 func JWTValidator(next echo.HandlerFunc) echo.HandlerFunc {
 	return func(c echo.Context) error {
-		cookie, err := c.Cookie("token")
-		if err != nil {
-			return c.JSON(http.StatusUnauthorized, map[string]string{"message": "Missing token"})
-		}
-
-		tokenString := cookie.Value
-
-		_, err = ValidateJWT(tokenString)
-
+		_, err := GetValidToken(c)
 		if err != nil {
 			return c.JSON(http.StatusUnauthorized, map[string]string{"message": "Invalid token"})
 		}

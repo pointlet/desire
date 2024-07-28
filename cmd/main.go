@@ -96,7 +96,7 @@ func main() {
 	server.e.POST("/login", login.PostHandler, middleware.Authenticate(userRepository))
 
 	server.e.GET("/home", func(c echo.Context) error {
-		return c.String(http.StatusOK, "˜")
+		return c.String(http.StatusOK, "You are authenticated")
 	}, middleware.JWTValidator)
 
 	ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt)
