@@ -13,6 +13,7 @@ import (
 	"github.com/feldtsen/farrago/pkg/db"
 	"github.com/feldtsen/farrago/pkg/middleware"
 	"github.com/labstack/echo/v4"
+	echoMiddleware "github.com/labstack/echo/v4/middleware"
 	"github.com/labstack/gommon/log"
 )
 
@@ -57,17 +58,19 @@ func sanityTestCRUD(userRepository db.UserRepository) {
 func main() {
 	server := NewServer()
 
-	/*
-		server.e.Use(echoMiddleware.CSRFWithConfig(echoMiddleware.CSRFConfig{
-			TokenLength:  32,
-			TokenLookup:  "header:X-CSRF-Token",
-			CookieName:   "_csrf",
-			CookieMaxAge: 86400,
-		}))
-	*/
+	server.e.Static("/static", "static")
+
+	server.e.Use(echoMiddleware.CSRFWithConfig(echoMiddleware.CSRFConfig{
+		TokenLength:    32,
+		TokenLookup:    "form:csrf_token",
+		CookieName:     "_csrf",
+		CookieMaxAge:   86400,
+		CookieHTTPOnly: true,
+		CookieSecure:   true,
+		CookieSameSite: http.SameSiteStrictMode,
+	}))
 
 	server.e.Logger.SetLevel(log.INFO)
-	server.e.Static("/static", "static")
 	server.e.Use()
 	defer server.e.Close()
 
