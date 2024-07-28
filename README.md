@@ -32,5 +32,5 @@ npm install tailwindcss@latest
 - Run makefile
 
 ```bash
-make run dev
+make dev
 ```
