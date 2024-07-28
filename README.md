@@ -26,7 +26,7 @@ brew services start postgresql@16
 - Make sure tailwind is installed
 
 ```bash
-npm install tailwindcss@latest
+npm i
 ```
 
 - Run makefile
