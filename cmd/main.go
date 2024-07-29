@@ -60,6 +60,20 @@ func main() {
 
 	server.e.Static("/static", "static")
 
+	server.e.Use(echoMiddleware.SecureWithConfig(echoMiddleware.SecureConfig{
+		XSSProtection:         "1; mode=block",
+		ContentTypeNosniff:    "nosniff",
+		XFrameOptions:         "DENY",
+		HSTSMaxAge:            3600,
+		ContentSecurityPolicy: "default-src 'self'",
+	}))
+
+	// TODO: I need to make sure that we accept localhost during local developer, but not in prod
+	server.e.Use(echoMiddleware.CORSWithConfig(echoMiddleware.CORSConfig{
+		// AllowOrigins: []string{"http://localhost:*"},
+		AllowMethods: []string{http.MethodGet, http.MethodPost, http.MethodPut, http.MethodDelete},
+	}))
+
 	server.e.Use(echoMiddleware.CSRFWithConfig(echoMiddleware.CSRFConfig{
 		TokenLength:    32,
 		TokenLookup:    "form:csrf_token",
@@ -81,8 +95,8 @@ func main() {
 	}
 	defer dbpool.Close()
 
-	// TODO: testing interface for UserRepository
 	userRepository := &db.PgxUserRepository{DB: dbpool}
+	// TODO: testing interface for UserRepository
 	sanityTestCRUD(userRepository)
 
 	// Landing page
