@@ -1,17 +1,15 @@
-import { colors, fontFamily } from "./theme/index";
-import { createColorsToCssVariablesPlugin } from "./plugins/colorsToCssVariables";
+import { colors, fontFamily } from './theme/index';
+import { createColorsToCssVariablesPlugin } from './plugins/colorsToCssVariables';
 
 /** @type {import('tailwindcss').Config} */
 export default {
-  mode: "jit",
-  content: ["view/**/*.html", "view/**/*.templ"],
+  mode: 'jit',
+  content: ['view/**/*.html', 'view/**/*.templ'],
   theme: {
     extend: {
       colors,
-      fontFamily
+      fontFamily,
     },
   },
-  plugins: [
-    createColorsToCssVariablesPlugin(colors)
-  ],
-}
+  plugins: [createColorsToCssVariablesPlugin(colors)],
+};

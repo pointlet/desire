@@ -1,13 +1,13 @@
 const baseColors = {
-  white: "#ffffff",
-  gray: "#04e4e7",
-  dim: "#333333",
-  dark: "#202020",
-  black: "#000000",
+  white: '#ffffff',
+  gray: '#04e4e7',
+  dim: '#333333',
+  dark: '#202020',
+  black: '#000000',
 
-  blue: "#0000ff",
-  blueLight: "#5555ff",
-  blueDark: "#000055",
+  blue: '#0000ff',
+  blueLight: '#5555ff',
+  blueDark: '#000055',
 };
 
 export const colors = {
