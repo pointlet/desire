@@ -3,6 +3,8 @@ package middleware
 import (
 	"strings"
 	"testing"
+
+	"github.com/feldtsen/farrago/pkg/db"
 )
 
 func TestGenerateHashPassword_WithLengthValidation(t *testing.T) {
@@ -22,7 +24,7 @@ func TestGenerateHashPassword_WithLengthValidation(t *testing.T) {
 	}
 
 	for _, tt := range tests {
-		_, err := GenerateHashPassword(tt.password)
+		_, err := db.GenerateHashPassword(tt.password)
 		if (err != nil) != tt.wantErr {
 			t.Errorf("GenerateHashPassword(%v) error = %v, wantErr %v", tt.password, err, tt.wantErr)
 		}

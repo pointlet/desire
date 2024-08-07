@@ -20,4 +20,5 @@ func renderByHXRequest(c echo.Context, partial templ.Component, page templ.Compo
 
 func GetCSRFToken(c echo.Context) string {
 	return c.Get(echoMiddleware.DefaultCSRFConfig.ContextKey).(string)
+		
 }
