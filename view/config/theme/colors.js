@@ -1,6 +1,6 @@
 const baseColors = {
   white: '#ffffff',
-  gray: '#04e4e7',
+  gray: '#e4e4e7',
   dim: '#333333',
   dark: '#202020',
   black: '#000000',
