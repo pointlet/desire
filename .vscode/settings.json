@@ -2,12 +2,16 @@
   "editor.detectIndentation": false,
   "editor.tabSize": 2,
   "editor.insertSpaces": true,
-  "editor.formatOnSave": true,
-  "[templ]": {
-    "editor.defaultFormatter": "a-h.templ"
-  },
   "editor.quickSuggestions": {
     "strings": "on"
+  },
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit"
+  },
+  "[templ]": {
+    "editor.defaultFormatter": "a-h.templ"
   },
   "files.associations": {
     "*.css": "tailwindcss"
