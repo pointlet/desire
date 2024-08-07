@@ -121,7 +121,7 @@ func main() {
 
 	// Start server
 	go func() {
-		if err := server.e.Start(server.config.Server.Port); err != nil && err != http.ErrServerClosed {
+		if err := server.e.Start("localhost"+server.config.Server.Port); err != nil && err != http.ErrServerClosed {
 			server.e.Logger.Fatal("shutting down the server")
 		}
 	}()

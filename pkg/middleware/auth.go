@@ -38,12 +38,14 @@ func Authenticate(userRepository db.UserRepository) echo.MiddlewareFunc {
 				return c.JSON(500, map[string]string{"error": "Failed to generate token"})
 			}
 
-			jwtCookie := new(http.Cookie)
-			jwtCookie.Name = "token"
-			jwtCookie.Value = token
-			jwtCookie.Expires = time.Now().Add(72 * time.Hour)
-			jwtCookie.HttpOnly = true
-			jwtCookie.Secure = true
+			jwtCookie := &http.Cookie{
+				Name: 	 "token",
+				Value: 	token,
+				Expires: time.Now().Add(72 * time.Hour),
+				HttpOnly: true,
+				Secure: 	true,
+			}
+
 			c.SetCookie(jwtCookie)
 
 			return next(c)
