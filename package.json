@@ -1,4 +1,7 @@
 {
+  "name": "desire",
+  "version": "1.0.0",
+  "type": "module",
   "devDependencies": {
     "tailwindcss": "^3.4.7"
   }
