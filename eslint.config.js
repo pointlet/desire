@@ -21,12 +21,15 @@ export default [
   // Browser logic files (browser)
   /*
   {
-    files: ["TODO"],
+    files: [], // TODO
     rules: {
       ...js.configs.recommended.rules,
     },
     languageOptions: { 
       globals: globals.browser
+    },
+    plugins: {
+      format: prettierPlugin,
     },
   },
   */
