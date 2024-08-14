@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
+	"strings"
 	"time"
 
 	"github.com/feldtsen/farrago/pkg/api/handlers"
@@ -57,6 +58,16 @@ func sanityTestCRUD(userRepository db.UserRepository) {
 
 func main() {
 	server := NewServer()
+
+	//TODO: workaround for not caching static during dev
+	 server.e.Use(func(next echo.HandlerFunc) echo.HandlerFunc {
+		return func(c echo.Context) error {
+				if strings.HasPrefix(c.Path(), "/static") {
+						c.Response().Header().Set("Cache-Control", "no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0")
+				}
+				return next(c)
+		}
+})
 
 	server.e.Static("/static", "static")
 
