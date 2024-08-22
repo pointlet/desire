@@ -60,6 +60,7 @@ func main() {
 	server := NewServer()
 
 	//TODO: workaround for not caching static during dev
+	// TOOO: correct solution would be to generate a hash for the static files and use that as a query parameter
 	 server.e.Use(func(next echo.HandlerFunc) echo.HandlerFunc {
 		return func(c echo.Context) error {
 				if strings.HasPrefix(c.Path(), "/static") {

@@ -18,5 +18,8 @@
   },
   "tailwindCSS.includeLanguages": {
     "templ": "html"
+  },
+  "[go]": {
+    "editor.defaultFormatter": "golang.go"
   }
 }
